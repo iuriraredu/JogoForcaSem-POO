@@ -53,6 +53,11 @@ public class Forca {
             System.out.println(novaDica);
             vida++;
         } while (!(novaDica.equals(palavraChave)) && vida<10);
+        if ((novaDica.equals(palavraChave))){
+            System.out.println("Parabéns!\nVocê acertou a palavra! A palavra era "+novaDica+".");
+        } else {
+            System.out.println("Poxa, que pena!\nVocê não acertou a palavra!");
+        }
     }
 
     public static String listaPalavraDificil(){
