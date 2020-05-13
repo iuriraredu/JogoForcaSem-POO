@@ -8,9 +8,8 @@ public class Forca {
     public static void main (String[] args){
         String palavraChave = null, novaDica = "";
         int qtdLetra, vida = 0;
-        System.out.println("Bem vindo ao jogo!");
         Scanner in = new Scanner(System.in);
-        System.out.print("Qual dificuldade do jogo? F (Fácil); N (Normal); D (Difícil): ");
+        System.out.print("Bem vindo ao jogo!\nQual dificuldade do jogo? F (Fácil); N (Normal); D (Difícil): ");
         String dificuldadeJogo = in.next().toUpperCase();
 
         switch (dificuldadeJogo){
@@ -42,9 +41,7 @@ public class Forca {
             qtdLetra = palavraChave.length();
             int i = 0;
             while (i < qtdLetra){
-                if (listaLetrasCorretas[i].equals(letraDigitada)){
-                    dica[i]=letraDigitada;
-                }
+                dica[i] = listaLetrasCorretas[i].equals(letraDigitada) ? letraDigitada: dica[i];
                 i++;
             }
             for (String s : dica){
@@ -52,12 +49,8 @@ public class Forca {
             }
             System.out.println(novaDica);
             vida++;
-        } while (!(novaDica.equals(palavraChave)) && vida<10);
-        if ((novaDica.equals(palavraChave))){
-            System.out.println("Parabéns!\nVocê acertou a palavra! A palavra era "+novaDica+".");
-        } else {
-            System.out.println("Poxa, que pena!\nVocê não acertou a palavra!");
-        }
+        } while (!novaDica.equals(palavraChave) && vida<10);
+        System.out.println(novaDica.equals(palavraChave) ? "Parabéns!\nVocê acertou, a palavra era "+novaDica+"." :"Poxa, que pena!\nVocê não acertou a palavra!");
     }
 
     public static String listaPalavraDificil(){
