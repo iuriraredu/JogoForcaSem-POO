@@ -32,25 +32,29 @@ public class Forca {
             listaEmString += s;
         }
         System.out.println(listaEmString);
+        String[] listaLetrasCorretas = palavraChave.split("");
+        qtdLetra = palavraChave.length();
 
         do {
+            boolean acertou = false;
+            int i = 0;
             novaDica = "";
             System.out.println("Qual letra você chuta? ");
             String letraDigitada = in.next().toLowerCase();
-            String[] listaLetrasCorretas = palavraChave.split("");
-            qtdLetra = palavraChave.length();
-            int i = 0;
             while (i < qtdLetra){
-                dica[i] = listaLetrasCorretas[i].equals(letraDigitada) ? letraDigitada: dica[i];
+                if (listaLetrasCorretas[i].equals(letraDigitada)){
+                    dica[i] = letraDigitada;
+                    acertou = true;
+                }
                 i++;
             }
+            vida += acertou ? 0:1; // if (acertou  == true) {vida=vida+0;} else {vida=vida+1;}
             for (String s : dica){
                 novaDica += s;
             }
             System.out.println(novaDica);
-            vida++;
         } while (!novaDica.equals(palavraChave) && vida<10);
-        System.out.println(novaDica.equals(palavraChave) ? "Parabéns!\nVocê acertou, a palavra era "+novaDica+"." :"Poxa, que pena!\nVocê não acertou a palavra!");
+        System.out.println(novaDica.equals(palavraChave) ? "Parabéns!\nVocê acertou, a palavra era "+novaDica+".":"Poxa, que pena!\nVocê não acertou a palavra!");
     }
 
     public static String listaPalavraDificil(){
