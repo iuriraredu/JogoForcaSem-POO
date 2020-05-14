@@ -4,10 +4,10 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Forca {
-    private static String[] dica;
+    private static String[] dica, letrasChutadas;
     public static void main (String[] args){
-        String palavraChave = null, novaDica = "";
-        int qtdLetra, vida = 0;
+        String palavraChave = null;
+        int qtdLetra, vida = 0, qtdDigitadas=0;
         Scanner in = new Scanner(System.in);
         System.out.print("Bem vindo ao jogo!\nQual dificuldade do jogo? F (Fácil); N (Normal); D (Difícil): ");
         String dificuldadeJogo = in.next().toUpperCase();
@@ -26,35 +26,51 @@ public class Forca {
                 System.out.println("Nenhuma tecla válida.");
                 break;
         }
-        String listaEmString = "";
-        montaDica(palavraChave.length());
-        for(String s : dica){
-            listaEmString += s;
-        }
-        System.out.println(listaEmString);
-        String[] listaLetrasCorretas = palavraChave.split("");
-        qtdLetra = palavraChave.length();
+        if (palavraChave != null) {
+            String listaEmString = "", novaDica = "", auxiliar = null;
+            montaDica(palavraChave.length());
+            letrasChutadas = new String[(palavraChave.length() + 10)];
+            // tamanho LetrasChutadas recebe tamanho da palavra mais 10 chances
+            for (int i = 0; i < letrasChutadas.length;i++){
+                letrasChutadas[i]=""; // preenche com espaço para depois comparar
+            }
+            for (String s : dica) {
+                listaEmString += s;
+            }
+            System.out.println(listaEmString);
+            String[] listaLetrasCorretas = palavraChave.split("");
+            qtdLetra = palavraChave.length();
 
-        do {
-            boolean acertou = false;
-            int i = 0;
-            novaDica = "";
-            System.out.println("Qual letra você chuta? ");
-            String letraDigitada = in.next().toLowerCase();
-            while (i < qtdLetra){
-                if (listaLetrasCorretas[i].equals(letraDigitada)){
-                    dica[i] = letraDigitada;
-                    acertou = true;
+            do {
+                System.out.println("Qual letra você chuta? ");
+                String letraDigitada = in.next().toLowerCase();
+                if (!verificaLetra(letraDigitada,qtdDigitadas)) {
+                    boolean acertou = false;
+                    novaDica = "";
+                    qtdDigitadas++;
+                    int i = 0;
+                    while (i < qtdLetra) {
+                        if (listaLetrasCorretas[i].equals(letraDigitada)) {
+                            dica[i] = letraDigitada;
+                            acertou = true;
+                        }
+                        i++;
+                    }
+                    vida += acertou ? 0 : 1; // if (acertou  == true) {vida=vida+0;} else {vida=vida+1;}
+                    auxiliar = "Você ainda tem " + (10 - vida) + " vida (s) e as letras já digitadas foram: ";
+                    for (String s : letrasChutadas) {
+                        auxiliar += s+" ";
+                    }
+                    for (String s : dica) {
+                        novaDica += s;
+                    }
+                    System.out.println(auxiliar+"\n"+novaDica);
+                } else {
+                    System.out.println("Ops, você já digitou essa letra! "+auxiliar+"\n"+novaDica);
                 }
-                i++;
-            }
-            vida += acertou ? 0:1; // if (acertou  == true) {vida=vida+0;} else {vida=vida+1;}
-            for (String s : dica){
-                novaDica += s;
-            }
-            System.out.println(novaDica);
-        } while (!novaDica.equals(palavraChave) && vida<10);
-        System.out.println(novaDica.equals(palavraChave) ? "Parabéns!\nVocê acertou, a palavra era "+novaDica+".":"Poxa, que pena!\nVocê não acertou a palavra!");
+            } while (!novaDica.equals(palavraChave) && vida < 10);
+            System.out.println(novaDica.equals(palavraChave) ? "Parabéns!\nVocê acertou, a palavra era " + novaDica + "." : "Poxa, que pena!\nVocê não acertou a palavra!");
+        }
     }
 
     public static String listaPalavraDificil(){
@@ -81,5 +97,17 @@ public class Forca {
             dica[i] = " _ ";
         }
         return dica;
+    }
+
+    public static boolean verificaLetra(String letra, int qtdDigitada){
+        boolean t = false;
+        for(int i = 0;i < (letrasChutadas.length); i++){
+            if (letrasChutadas[i].equals(letra)){
+                t = true;
+                break;
+            }
+        }
+        letrasChutadas[qtdDigitada] = letra;
+        return t;
     }
 }
