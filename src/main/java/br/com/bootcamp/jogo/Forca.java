@@ -4,10 +4,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Forca {
+
     private static String[] dica, letrasChutadas;
     public static void main (String[] args){
         String palavraChave = null;
-        int qtdLetra, vida = 0, qtdDigitadas=0;
+        int qtdLetra, vida = 0, qtdDigitadas = 0;
         Scanner in = new Scanner(System.in);
         System.out.print("Bem vindo ao jogo!\nQual dificuldade do jogo? F (Fácil); N (Normal); D (Difícil): ");
         String dificuldadeJogo = in.next().toUpperCase();
@@ -26,8 +27,9 @@ public class Forca {
                 System.out.println("Nenhuma tecla válida.");
                 break;
         }
+
         if (palavraChave != null) {
-            String listaEmString = "", novaDica = "", auxiliar = null;
+            String listaEmString = "", novaDica = null, auxiliar = null;
             montaDica(palavraChave.length());
             letrasChutadas = new String[(palavraChave.length() + 10)];
             // tamanho LetrasChutadas recebe tamanho da palavra mais 10 chances
@@ -42,7 +44,7 @@ public class Forca {
             qtdLetra = palavraChave.length();
 
             do {
-                System.out.println("Qual letra você chuta? ");
+                System.out.println(auxiliar == null ? "Qual letra você chuta?":auxiliar+"\n"+novaDica+"\nQual letra você chuta?");
                 String letraDigitada = in.next().toLowerCase();
                 if (!verificaLetra(letraDigitada,qtdDigitadas)) {
                     boolean acertou = false;
@@ -64,12 +66,13 @@ public class Forca {
                     for (String s : dica) {
                         novaDica += s;
                     }
-                    System.out.println(auxiliar+"\n"+novaDica);
                 } else {
-                    System.out.println("Ops, você já digitou essa letra! "+auxiliar+"\n"+novaDica);
+                    System.out.print("Ops, você já digitou essa letra! ");
                 }
             } while (!novaDica.equals(palavraChave) && vida < 10);
-            System.out.println(novaDica.equals(palavraChave) ? "Parabéns!\nVocê acertou, a palavra era " + novaDica + "." : "Poxa, que pena!\nVocê não acertou a palavra!");
+            System.out.println(novaDica.equals(palavraChave) ? //if (novaDica.equals(palavraChave))
+                    "Parabéns!\nVocê acertou, a palavra era " + novaDica + "." : // true
+                    "Poxa, que pena!\nVocê não acertou a palavra!"); // false
         }
     }
 
